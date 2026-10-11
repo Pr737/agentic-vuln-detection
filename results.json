@@ -1,0 +1,348 @@
+[
+  {
+    "name": "sqli_login",
+    "tier": "easy",
+    "expected": [
+      "CWE-89"
+    ],
+    "agent": [
+      "CWE-89"
+    ],
+    "rules": [
+      "CWE-89"
+    ],
+    "fixed": true,
+    "attempts": 1,
+    "patched": "import sqlite3\n\ndef get_user(conn, username):\n    query = \"SELECT * FROM users WHERE name = ?\"\n    cur = conn.cursor()\n    cur.execute(query, (username,))\n    return cur.fetchone()\n"
+  },
+  {
+    "name": "cmd_injection_ping",
+    "tier": "easy",
+    "expected": [
+      "CWE-78"
+    ],
+    "agent": [
+      "CWE-78"
+    ],
+    "rules": [
+      "CWE-78"
+    ],
+    "fixed": true,
+    "attempts": 1,
+    "patched": "import subprocess\n\ndef ping_host(host):\n    subprocess.run([\"ping\", \"-c\", \"1\", host], check=True)\n"
+  },
+  {
+    "name": "eval_calculator",
+    "tier": "easy",
+    "expected": [
+      "CWE-95"
+    ],
+    "agent": [
+      "CWE-95"
+    ],
+    "rules": [
+      "CWE-95"
+    ],
+    "fixed": true,
+    "attempts": 2,
+    "patched": "import ast\n\ndef calculate(user_expression):\n    try:\n        result = ast.literal_eval(user_expression)\n        return result\n    except (ValueError, SyntaxError):\n        raise ValueError(\"Invalid expression\")\n"
+  },
+  {
+    "name": "pickle_load",
+    "tier": "easy",
+    "expected": [
+      "CWE-502"
+    ],
+    "agent": [
+      "CWE-502"
+    ],
+    "rules": [
+      "CWE-502"
+    ],
+    "fixed": true,
+    "attempts": 2,
+    "patched": "import json\n\ndef load_session(request_body):\n    data = json.loads(request_body)\n    return data\n"
+  },
+  {
+    "name": "hardcoded_secret",
+    "tier": "easy",
+    "expected": [
+      "CWE-798"
+    ],
+    "agent": [
+      "CWE-798"
+    ],
+    "rules": [
+      "CWE-798"
+    ],
+    "fixed": true,
+    "attempts": 1,
+    "patched": "import requests\n\nAPI_KEY = os.getenv(\"API_KEY\")\n\ndef fetch_orders():\n    headers = {\"Authorization\": \"Bearer \" + API_KEY}\n    return requests.get(\"https://api.example.com/orders\", headers=headers).json()\n"
+  },
+  {
+    "name": "weak_hash",
+    "tier": "easy",
+    "expected": [
+      "CWE-327"
+    ],
+    "agent": [
+      "CWE-327"
+    ],
+    "rules": [
+      "CWE-327"
+    ],
+    "fixed": true,
+    "attempts": 1,
+    "patched": "import hashlib\n\ndef hash_password(password):\n    return hashlib.sha256(password.encode()).hexdigest()\n"
+  },
+  {
+    "name": "tls_disabled",
+    "tier": "easy",
+    "expected": [
+      "CWE-295"
+    ],
+    "agent": [
+      "CWE-295"
+    ],
+    "rules": [
+      "CWE-295"
+    ],
+    "fixed": true,
+    "attempts": 2,
+    "patched": "import requests\n\ndef download(url):\n    response = requests.get(url)\n    return response.text\n"
+  },
+  {
+    "name": "path_traversal",
+    "tier": "easy",
+    "expected": [
+      "CWE-22"
+    ],
+    "agent": [
+      "CWE-22"
+    ],
+    "rules": [
+      "CWE-22"
+    ],
+    "fixed": true,
+    "attempts": 1,
+    "patched": "import os\n\ndef read_report(filename):\n    report_path = os.path.join(\"/var/reports/\", filename)\n    with open(report_path) as f:\n        return f.read()\n"
+  },
+  {
+    "name": "yaml_load",
+    "tier": "easy",
+    "expected": [
+      "CWE-502"
+    ],
+    "agent": [
+      "CWE-502"
+    ],
+    "rules": [
+      "CWE-502"
+    ],
+    "fixed": true,
+    "attempts": 1,
+    "patched": "import yaml\n\ndef parse_config(text):\n    return yaml.safe_load(text)\n"
+  },
+  {
+    "name": "xss_greeting",
+    "tier": "easy",
+    "expected": [
+      "CWE-79"
+    ],
+    "agent": [
+      "CWE-79"
+    ],
+    "rules": [
+      "CWE-79"
+    ],
+    "fixed": false,
+    "attempts": 3,
+    "patched": "from flask import Flask, request, escape\n\napp = Flask(__name__)\n\n@app.route(\"/hello\")\ndef hello():\n    name = request.args.get(\"name\", \"\")\n    return f\"<h1>Hello {escape(name)}</h1>\"\n"
+  },
+  {
+    "name": "insecure_random_token",
+    "tier": "easy",
+    "expected": [
+      "CWE-338"
+    ],
+    "agent": [
+      "CWE-338"
+    ],
+    "rules": [
+      "CWE-338"
+    ],
+    "fixed": true,
+    "attempts": 1,
+    "patched": "import secrets\n\ndef make_reset_token():\n    token = secrets.token_hex(6)\n    return token\n"
+  },
+  {
+    "name": "flask_debug",
+    "tier": "easy",
+    "expected": [
+      "CWE-489"
+    ],
+    "agent": [
+      "CWE-489"
+    ],
+    "rules": [
+      "CWE-489"
+    ],
+    "fixed": true,
+    "attempts": 1,
+    "patched": "from flask import Flask\n\napp = Flask(__name__)\n\nif __name__ == \"__main__\":\n    app.run(host=\"0.0.0.0\")\n"
+  },
+  {
+    "name": "multi_vuln_account",
+    "tier": "easy",
+    "expected": [
+      "CWE-327",
+      "CWE-798",
+      "CWE-89"
+    ],
+    "agent": [
+      "CWE-327",
+      "CWE-798",
+      "CWE-89"
+    ],
+    "rules": [
+      "CWE-327",
+      "CWE-798",
+      "CWE-89"
+    ],
+    "fixed": false,
+    "attempts": 3,
+    "patched": "import hashlib\nimport sqlite3\n\nDB_PASSWORD = \"root1234\"\n\ndef create_user(conn, name, password):\n    digest = hashlib.sha256(password.encode()).hexdigest()\n    sql = \"INSERT INTO users (name, pw) VALUES (?, ?)\"\n    conn.execute(sql, (name, digest))\n"
+  },
+  {
+    "name": "safe_query_and_hash",
+    "tier": "easy",
+    "expected": [],
+    "agent": [],
+    "rules": [],
+    "fixed": null,
+    "attempts": 0,
+    "patched": ""
+  },
+  {
+    "name": "safe_subprocess",
+    "tier": "easy",
+    "expected": [],
+    "agent": [
+      "CWE-78"
+    ],
+    "rules": [],
+    "fixed": null,
+    "attempts": 1,
+    "patched": "import subprocess\n\ndef ping_host(host):\n    return subprocess.run([\"ping\", \"-c\", \"1\", host], check=True, capture_output=True, text=True)\n"
+  },
+  {
+    "name": "safe_file_read",
+    "tier": "easy",
+    "expected": [],
+    "agent": [
+      "CWE-22"
+    ],
+    "rules": [],
+    "fixed": null,
+    "attempts": 1,
+    "patched": "import os\n\nBASE_DIR = \"/var/reports\"\n\ndef read_report(filename):\n    safe_name = os.path.basename(filename)\n    with open(os.path.join(BASE_DIR, safe_name), mode='r') as f:\n        return f.read()\n"
+  },
+  {
+    "name": "sqli_multiline",
+    "tier": "hard",
+    "expected": [
+      "CWE-89"
+    ],
+    "agent": [
+      "CWE-89"
+    ],
+    "rules": [],
+    "fixed": true,
+    "attempts": 1,
+    "patched": "import sqlite3\n\ndef find_orders(conn, customer_id):\n    query = \"SELECT * FROM orders WHERE customer_id = ?\"\n    cursor = conn.cursor()\n    cursor.execute(query, (customer_id,))\n    return cursor.fetchall()\n"
+  },
+  {
+    "name": "ssrf_proxy",
+    "tier": "hard",
+    "expected": [
+      "CWE-918"
+    ],
+    "agent": [
+      "CWE-918"
+    ],
+    "rules": [],
+    "fixed": true,
+    "attempts": 1,
+    "patched": "import requests\nfrom flask import request\n\ndef proxy():\n    url = request.args.get(\"url\")\n    if url.startswith(\"http://\") or url.startswith(\"https://\"):\n        return requests.get(url, timeout=5).text\n    else:\n        raise ValueError(\"Invalid URL\")\n"
+  },
+  {
+    "name": "open_redirect",
+    "tier": "hard",
+    "expected": [
+      "CWE-601"
+    ],
+    "agent": [
+      "CWE-601"
+    ],
+    "rules": [],
+    "fixed": true,
+    "attempts": 1,
+    "patched": "from flask import request, redirect, url_for\n\ndef login_done():\n    next_url = request.args.get(\"next\")\n    if next_url and next_url.startswith(\"/\"):\n        return redirect(next_url)\n    else:\n        return redirect(url_for('home'))\n"
+  },
+  {
+    "name": "des_ecb_encrypt",
+    "tier": "hard",
+    "expected": [
+      "CWE-327"
+    ],
+    "agent": [
+      "CWE-327"
+    ],
+    "rules": [],
+    "fixed": true,
+    "attempts": 1,
+    "patched": "from Crypto.Cipher import DES3\nfrom Crypto.Random import get_random_bytes\n\ndef encrypt(key, data):\n    cipher = DES3.new(key, DES3.MODE_ECB)\n    return cipher.encrypt(data)\n"
+  },
+  {
+    "name": "insecure_tempfile",
+    "tier": "hard",
+    "expected": [
+      "CWE-377"
+    ],
+    "agent": [
+      "CWE-377"
+    ],
+    "rules": [],
+    "fixed": true,
+    "attempts": 1,
+    "patched": "import tempfile\n\ndef make_scratch():\n    path = tempfile.mkstemp()[1]\n    return open(path, \"w\")\n"
+  },
+  {
+    "name": "creds_in_connection_string",
+    "tier": "hard",
+    "expected": [
+      "CWE-798"
+    ],
+    "agent": [
+      "CWE-798"
+    ],
+    "rules": [],
+    "fixed": true,
+    "attempts": 2,
+    "patched": "import os\nimport psycopg2\n\ndef connect():\n    return psycopg2.connect(\n        dbname=os.getenv('DB_NAME'),\n        user=os.getenv('DB_USER'),\n        password=os.getenv('DB_PASSWORD'),\n        host=os.getenv('DB_HOST')\n    )\n"
+  },
+  {
+    "name": "missing_authorization",
+    "tier": "hard",
+    "expected": [
+      "CWE-862"
+    ],
+    "agent": [
+      "CWE-862"
+    ],
+    "rules": [],
+    "fixed": true,
+    "attempts": 1,
+    "patched": "from flask import Flask, request, jsonify\nimport sqlite3\n\napp = Flask(__name__)\n\n@app.route(\"/admin/delete_user\", methods=[\"POST\"])\ndef delete_user():\n    user_id = request.form.get(\"user_id\")\n    if not user_id:\n        return jsonify({\"error\": \"User ID is required\"}), 400\n\n    conn = sqlite3.connect('your_database.db')\n    cursor = conn.cursor()\n    cursor.execute(\"SELECT password FROM users WHERE id = ?\", (user_id,))\n    password = cursor.fetchone()\n\n    if not password:\n        return jsonify({\"error\": \"User not found\"}), 404\n\n    # Assuming you have a function to authenticate the user\n    if not authenticate_user(user_id, password[0]):\n        return jsonify({\"error\": \"Unauthorized\"}), 401\n\n    cursor.execute(\"DELETE FROM users WHERE id = ?\", (user_id,))\n    conn.commit()\n    conn.close()\n\n    return jsonify({\"message\": \"User deleted\"})\n\ndef authenticate_user(user_id, password):\n    # Implement your authentication logic here\n    # For example, check against a database or an API\n    return True  # Placeholder for actual authentication logic\n"
+  }
+]
